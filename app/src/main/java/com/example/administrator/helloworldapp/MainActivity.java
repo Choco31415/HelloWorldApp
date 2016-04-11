@@ -14,7 +14,7 @@ public class MainActivity extends AppCompatActivity {
     Random rng = new Random();
     int num1;
     int num2;
-    int problemNum = 0;
+    int problemNum = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,5 +44,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void nextQuestion(View view) {
         generateProblem();
+        TextView problemText = (TextView) findViewById(R.id.questionText);
+        problemNum++;
+        problemText.setText("Question #" + problemNum + "of 10");
     }
 }
