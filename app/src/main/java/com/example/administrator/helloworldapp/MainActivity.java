@@ -16,12 +16,29 @@ public class MainActivity extends AppCompatActivity {
     int num2;
     int problemNum = 1;
 
+    static final String SAVED_NUM1 = "num1";
+    static final String SAVED_NUM2 = "num2";
+    static final String SAVED_PROBLEM_NUMBER = "problemNumber";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        generateProblem();
+        if (savedInstanceState != null) {
+            num1 = savedInstanceState.getInt(SAVED_NUM1);
+            num2 = savedInstanceState.getInt(SAVED_NUM2);
+            problemNum = savedInstanceState.getInt(SAVED_PROBLEM_NUMBER);
+
+            TextView problem = (TextView)findViewById(R.id.actualQuestion);
+            problem.setText(num1 + "+" + num2 + "=");
+
+            Button nextQuestionButton = (Button) findViewById(R.id.nextProblemButton);
+            nextQuestionButton.setEnabled(false);
+
+        } else {
+            generateProblem();
+        }
     }
 
     public void generateProblem() {
@@ -29,14 +46,16 @@ public class MainActivity extends AppCompatActivity {
         num2 = rng.nextInt(10)+1;
 
         TextView problem = (TextView)findViewById(R.id.actualQuestion);
-
         problem.setText(num1 + "+" + num2 + "=");
+
+        Button nextQuestionButton = (Button) findViewById(R.id.nextProblemButton);
+        nextQuestionButton.setEnabled(false);
     }
 
     public void checkAnswer(View view) {
         EditText input = (EditText) findViewById(R.id.answer);
 
-        if (Integer.parseInt(input.getText().toString()) == num1 + num2) {
+        if (input.getText().toString() != null && Integer.parseInt(input.getText().toString()) == num1 + num2) {
             Button nextQuestionButton = (Button) findViewById(R.id.nextProblemButton);
             nextQuestionButton.setEnabled(true);
         }
@@ -47,5 +66,14 @@ public class MainActivity extends AppCompatActivity {
         TextView problemText = (TextView) findViewById(R.id.questionText);
         problemNum++;
         problemText.setText("Question #" + problemNum + "of 10");
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        savedInstanceState.putInt(SAVED_NUM1, num1);
+        savedInstanceState.putInt(SAVED_NUM2, num2);
+        savedInstanceState.putInt(SAVED_PROBLEM_NUMBER, problemNum);
+
+        super.onSaveInstanceState(savedInstanceState);
     }
 }
