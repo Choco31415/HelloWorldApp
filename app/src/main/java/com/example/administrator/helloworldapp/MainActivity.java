@@ -1,5 +1,6 @@
 package com.example.administrator.helloworldapp;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -15,10 +16,13 @@ public class MainActivity extends AppCompatActivity {
     int num1;
     int num2;
     int problemNum = 1;
+    int attempts = 0;
+    int correctOnFirstTry = 0;
 
     static final String SAVED_NUM1 = "num1";
     static final String SAVED_NUM2 = "num2";
     static final String SAVED_PROBLEM_NUMBER = "problemNumber";
+    static final String SAVED_PROBLEMS_CORRECT = "problemsCorrect";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -62,10 +66,19 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextQuestion(View view) {
-        generateProblem();
-        TextView problemText = (TextView) findViewById(R.id.questionText);
-        problemNum++;
-        problemText.setText("Question #" + problemNum + "of 10");
+        if (problemNum <= 10) {
+            generateProblem();
+            TextView problemText = (TextView) findViewById(R.id.questionText);
+            problemNum++;
+
+            if (attempts == 0) {
+                correctOnFirstTry += 1;
+            }
+
+            problemText.setText("Question #" + problemNum + "of 10");
+        } else {
+            Intent intent = new Intent(this, GameOver.class);
+        }
     }
 
     @Override
