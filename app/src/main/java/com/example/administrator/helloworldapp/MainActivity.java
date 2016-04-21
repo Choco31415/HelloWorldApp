@@ -22,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
     static final String SAVED_NUM1 = "num1";
     static final String SAVED_NUM2 = "num2";
     static final String SAVED_PROBLEM_NUMBER = "problemNumber";
-    static final String SAVED_PROBLEMS_CORRECT = "problemsCorrect";
+    static final String EXTRA_PROBLEMS_CORRECT = "problemsCorrect";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void nextQuestion(View view) {
-        if (problemNum <= 10) {
+        if (problemNum < 10) {
             generateProblem();
             TextView problemText = (TextView) findViewById(R.id.questionText);
             problemNum++;
@@ -78,6 +78,8 @@ public class MainActivity extends AppCompatActivity {
             problemText.setText("Question #" + problemNum + "of 10");
         } else {
             Intent intent = new Intent(this, GameOver.class);
+            intent.putExtra(EXTRA_PROBLEMS_CORRECT, correctOnFirstTry);
+            startActivity(intent);
         }
     }
 
